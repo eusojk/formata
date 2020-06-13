@@ -6,9 +6,11 @@ authors = ["Josue K <josue.kpodo@gmail.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.7"
+xarray = "^0.15.1"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
+flake8 = "^3.8.3"
 
 [build-system]
 requires = ["poetry>=0.12"]
