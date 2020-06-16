@@ -4,7 +4,7 @@ import xarray as xr
 from pathlib import Path
 
 
-class NCToWTHConverter:
+class WeatherDataNC:
     """
     A Converter class to WTH files from gloabl NetCDF weather data
     """
