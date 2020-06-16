@@ -1,4 +1,4 @@
-*WEATHER DATA : 082_161.psims.nc
+*WEATHER DATA : 082_161.agmerra.nc
 @ INSI      LAT     LONG  ELEV   TAV   AMP REFHT WNDHT
     CI   49.250  -99.750   -99   3.5  34.7   -99    10
 @DATE  SRAD  TMAX  TMIN  RAIN  WIND
