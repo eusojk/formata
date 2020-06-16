@@ -12,6 +12,25 @@ def is_leap_year(year):
     return True if check else False
 
 
+def format_data_vars_entry(data_vars, date, padding=6):
+    """
+    Transforms weather data info into formatted daily entry:
+        e.g. 82058  11.0  -9.5 -22.6   0.0 334.8
+    :param data_vars: an ordered Dict containing 7 weather variables data
+    :param date: a string representing a date. e.g 82058
+    :param padding: # of space before value
+    :return: formatted string
+    """
+    entry = ''
+    for k, v in data_vars.items():
+        v_str = str(v)
+        v_str = v_str.rjust(padding)
+        entry += v_str
+
+    # print(entry)
+    return entry
+
+
 def make_wth_dates_format():
     """
     Format to WTH Date: e.g. 1st of 1980 => 80001
@@ -36,19 +55,19 @@ def make_wth_dates_format():
 
 def get_daily_data_vars(ds_all, lat, lon, timeval):
     """
-
-    :param ds_all:
-    :param lat:
-    :param lon:
-    :param timeval:
-    :return:
+    This function retrieves weather variables at a location
+    :param ds_all: an xarray dataset containing global weather data from 1980 - 2010
+    :param lat: latitude
+    :param lon: longitude
+    :param timeval: time (# of days)
+    :return: an ordered dictionary
     """
     data_vars_dict = collections.OrderedDict()
     ds = ds_all.isel(time=timeval, latitude=lat, longitude=lon)
     srad = ds.srad.values.tolist()
 
     # watch out for NaN values
-    if (math.isnan(srad)):
+    if math.isnan(srad):
         return
 
     data_vars_dict['SRAD'] = round(srad, 1)
