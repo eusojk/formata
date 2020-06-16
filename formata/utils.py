@@ -27,16 +27,18 @@ def format_data_vars_entry(data_vars, date, padding=6):
         v_str = v_str.rjust(padding)
         entry += v_str
 
-    # print(entry)
+    entry = date + entry
     return entry
 
 
-def make_wth_dates_format():
+def make_wth_dates_format(start_year=1980, num_year=30):
     """
     Format to WTH Date: e.g. 1st of 1980 => 80001
-    :return: a list of string dates
+    :param start_year: starting year of data (usually, for forecasting, 1980)
+    :param num_year: number of years after initial year (usually, for forecasting, 30)
+    :return: list of date in WTH format
     """
-    all_years = [1980 + x for x in range(31)]
+    all_years = [start_year + x for x in range(num_year + 1)]
     years_formated = []
 
     for yr in all_years:
