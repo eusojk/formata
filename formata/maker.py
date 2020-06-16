@@ -1,5 +1,5 @@
 import formata.parser as parser
-import formata.utils as utils
+import formata.utils as ut
 from pathlib import Path
 import glob
 
@@ -11,6 +11,7 @@ class NCToWTHConverter:
 
     def __init__(self, src_dir):
         self.src_dir = src_dir
+        self.years = ut.make_wth_dates_format()
 
     def check_dir(self):
 
@@ -31,7 +32,7 @@ class NCToWTHConverter:
             return False
         return True
 
-    def toWTH(self, dest_dir):
+    def to_WTH(self, dest_dir):
 
         if not self.is_out_dir_present(dest_dir):
             return
@@ -39,3 +40,27 @@ class NCToWTHConverter:
         nc_dir = self.check_dir()
         if nc_dir is None:
             return
+
+    def to_WTH_converter(self, weather_data):
+        ds_all = weather_data.get_global_dataset
+        lon_num = weather_data.get_num_of_attribute('longitude')
+        lat_num = weather_data.get_num_of_attribute('latitude')
+
+        # top bottom, left to right
+        for lon_i in range(lon_num):
+            lon = ds_all.longitude.isel(longitude=lon_i).values.tolist()
+
+            for lat_i in range(lat_num):
+                lat = ds_all.latitude.isel(latitude=lat_i).values.tolist()
+
+                # call format_header(lon, lat) here
+
+                for t, date in enumerate(self.years):
+                    daily_data_vars = ut.get_daily_data_vars(ds_all, lat_i, lon_i, t)
+                    # disregard all NAN values
+                    if daily_data_vars is None:
+                        break
+
+                    entry = ut.format_data_vars_entry(daily_data_vars, date)
+
+                    # call a function to write each entry to a file
