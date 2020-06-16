@@ -1,18 +1,13 @@
 import unittest
 from formata import parser
+from formata import maker
 
-
-class DataNetCDFTestCase(unittest.TestCase):
+class NCToWTHConverterTestCase(unittest.TestCase):
 
     def test_ds_dir_unavailable(self):
-        wrong_dir = 'D:/ddrive/agmerra_net_filesa'
-        data = parser.WeatherDataNC(wrong_dir)
-        self.assertIsNone(data.get_datasets(wrong_dir), "Result should be None when directory doesn't exist")
-
-    def test_no_nc_found(self):
-        wrong_dir = 'D:/ddrive/'
-        data = parser.WeatherDataNC(wrong_dir)
-        self.assertIsNone(data.get_datasets(wrong_dir), "Result should be None when no .nc files found")
+        inp = 'D:/ddrive/agmerra_net_filesa'
+        data = maker.NCToWTHConverter(inp)
+        self.assertIsNone(data.check_dir(), "no nc files present")
 
 
 if __name__ == '__main__':
