@@ -27,7 +27,7 @@ def format_data_vars_entry(data_vars, date, padding=6):
         v_str = v_str.rjust(padding)
         entry += v_str
 
-    entry = date + entry
+    entry = date + entry + '\n'
     return entry
 
 
