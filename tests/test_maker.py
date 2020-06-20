@@ -1,6 +1,7 @@
 import unittest
-from formata import parser
+
 from formata import maker
+
 
 class NCToWTHConverterTestCase(unittest.TestCase):
 
@@ -13,6 +14,7 @@ class NCToWTHConverterTestCase(unittest.TestCase):
         inp = 'D:/ddrive/agmerra_net_files'
         data = maker.NCToWTHConverter(inp)
         self.assertIsNotNone(data.check_dir(), "nc files present")
+
 
 if __name__ == '__main__':
     unittest.main()

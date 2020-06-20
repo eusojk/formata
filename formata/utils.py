@@ -1,4 +1,5 @@
 import math
+
 import collections
 
 PAD = 6
@@ -8,6 +9,7 @@ EXT_NC = '.agmerra.nc\n'
 HEADER_L1 = '@ INSI      LAT     LONG  ELEV   TAV   AMP REFHT WNDHT\n'
 HEADER_L2 = '    CI   49.250  -99.750   -99   3.5  34.7   -99    10\n'
 HEADER_L3 = '@DATE  SRAD  TMAX  TMIN  RAIN  WIND  RHUM  TAVG\n'
+
 
 def is_leap_year(year):
     """

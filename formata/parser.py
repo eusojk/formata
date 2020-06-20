@@ -1,7 +1,4 @@
-import glob
-import numpy as np
 import xarray as xr
-from pathlib import Path
 
 
 class WeatherDataNC:

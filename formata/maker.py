@@ -31,6 +31,7 @@ class NCToWTHConverter:
 
         return nc_all
 
+    # noinspection PyMethodMayBeStatic
     def is_out_dir_present(self, dest_dir):
         """
         Check if the output dir given exists on disk
