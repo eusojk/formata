@@ -8,7 +8,9 @@ authors = ["Josue K <josue.kpodo@gmail.com>"]
 python = "^3.7"
 xarray = "^0.15.1"
 netCDF4 = "^1.5.3"
-dask = "^2.18.1"
+numpy = "^1.18.5"
+pandas = "^1.0.4"
+dask = {extras = ["complete"], version = "^2.18.1"}
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
