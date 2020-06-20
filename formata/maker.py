@@ -16,7 +16,10 @@ class NCToWTHConverter:
         self.years = ut.make_wth_dates_format()
 
     def check_dir(self):
-
+        """
+        Checks if the .NC files/dir exists
+        :return: path to the directory
+        """
         if not Path(self.src_dir).exists():
             print('No such directory found:', self.src_dir)
             return
@@ -29,13 +32,22 @@ class NCToWTHConverter:
         return nc_all
 
     def is_out_dir_present(self, dest_dir):
+        """
+        Check if the output dir given exists on disk
+        :param dest_dir: path - where to save .WTH
+        :return: bool
+        """
         if not Path(dest_dir).exists():
             print('No such output directory found:', dest_dir)
             return False
         return True
 
     def to_WTH(self, dest_dir):
-
+        """
+        caller function to to_WTH_converter
+        :param dest_dir: path - where to save .WTH
+        :return:
+        """
         if not self.is_out_dir_present(dest_dir):
             return
 
@@ -47,6 +59,12 @@ class NCToWTHConverter:
         self.to_WTH_converter(weather_data, dest_dir)
 
     def to_WTH_converter(self, weather_data, dest_dir):
+        """
+        Main function responsible for conversion
+        :param weather_data: xarray dataset containing global weather data
+        :param dest_dir: path to  export .WTH
+        :return:
+        """
         ds_all = weather_data.get_global_dataset()
         lon_num = weather_data.get_num_of_attribute('longitude')
         lat_num = weather_data.get_num_of_attribute('latitude')
