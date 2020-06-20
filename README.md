@@ -25,4 +25,4 @@ Extract from a sample WTH:
     * Temperature (min, max)
     * Wind speed
 
- * AgMerra climate datasets can be found on NASA GISS [website] (https://data.giss.nasa.gov/impacts/agmipcf/agmerra/)
+ * AgMerra climate datasets can be found on NASA GISS [website](https://data.giss.nasa.gov/impacts/agmipcf/agmerra/)
