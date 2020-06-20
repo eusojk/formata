@@ -1,6 +1,8 @@
 import formata.parser as parser
 import formata.utils as ut
 from pathlib import Path
+import os
+import shutil
 import glob
 
 
@@ -41,8 +43,11 @@ class NCToWTHConverter:
         if nc_dir is None:
             return
 
-    def to_WTH_converter(self, weather_data):
-        ds_all = weather_data.get_global_dataset
+        weather_data = parser.WeatherDataNC(nc_dir)
+        self.to_WTH_converter(weather_data, dest_dir)
+
+    def to_WTH_converter(self, weather_data, dest_dir):
+        ds_all = weather_data.get_global_dataset()
         lon_num = weather_data.get_num_of_attribute('longitude')
         lat_num = weather_data.get_num_of_attribute('latitude')
 
@@ -53,14 +58,28 @@ class NCToWTHConverter:
             for lat_i in range(lat_num):
                 lat = ds_all.latitude.isel(latitude=lat_i).values.tolist()
 
-                # call format_header(lon, lat) here
+                # create a dynamic header with updated LON, LAT info and move it into the folder given
+                wth_header_u = ut.format_header(lat_i + 1, lon_i + 1, lat, lon)
+                wth_header = dest_dir + "/" + wth_header_u
+                shutil.move(wth_header_u, wth_header)
 
+                # open in appending mode
+                fwth = open(wth_header, "a+")
+
+                # loop through daily weather data
                 for t, date in enumerate(self.years):
                     daily_data_vars = ut.get_daily_data_vars(ds_all, lat_i, lon_i, t)
                     # disregard all NAN values
                     if daily_data_vars is None:
+                        fwth.close()
+                        os.remove(wth_header)
                         break
-
                     entry = ut.format_data_vars_entry(daily_data_vars, date)
 
-                    # call a function to write each entry to a file
+                    # append this entry into the file
+                    fwth.write(entry)
+                    print("Added entry:", entry)
+
+                # close file after writing
+                fwth.close()
+                print("Output WTH:", wth_header)
