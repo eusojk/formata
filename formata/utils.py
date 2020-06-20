@@ -91,6 +91,16 @@ def get_daily_data_vars(ds_all, lat, lon, timeval):
 
 
 def format_header(lat_i, lon_i, lat, lon, pad_lat=3, pad_lon=4):
+    """
+    Responsible for formatting the header of .WTH files
+    :param lat_i: index position of given latitude value in the dataset
+    :param lon_i: index position of given longitude value in the dataset
+    :param lat: float - latitude value
+    :param lon: float - longitude value
+    :param pad_lat: int - justify lat value (3)
+    :param pad_lon: int - justify lon value (4)
+    :return: file/path
+    """
     base = str(lat_i).rjust(pad_lat, '0') + "_" + str(lon_i).rjust(pad_lon, '0')
     wth_name = base + ".WTH"
 
@@ -106,4 +116,3 @@ def format_header(lat_i, lon_i, lat, lon, pad_lat=3, pad_lon=4):
 
     fwth.close()
     return wth_name
-
