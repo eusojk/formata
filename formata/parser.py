@@ -16,8 +16,7 @@ class WeatherDataNC:
         self.ds_dims = dict(self.ds_all.dims)
 
     def merge_datasets(self):
-        ds_all = xr.open_mfdataset(self.nc_dir, decode_times=False, combine='by_coords', engine='netcdf4',
-                                   parallel=True)
+        ds_all = xr.open_mfdataset(self.nc_dir, decode_times=False, combine='by_coords', engine='netcdf4')
         return ds_all
 
     def get_num_of_attribute(self, attr):

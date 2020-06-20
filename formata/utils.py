@@ -1,6 +1,13 @@
 import math
 import collections
 
+PAD = 6
+PAD_LON_LAT = 9
+TITLE_W = '*WEATHER DATA : '
+EXT_NC = '.agmerra.nc\n'
+HEADER_L1 = '@ INSI      LAT     LONG  ELEV   TAV   AMP REFHT WNDHT\n'
+HEADER_L2 = '    CI   49.250  -99.750   -99   3.5  34.7   -99    10\n'
+HEADER_L3 = '@DATE  SRAD  TMAX  TMIN  RAIN  WIND  RHUM  TAVG\n'
 
 def is_leap_year(year):
     """
@@ -81,3 +88,22 @@ def get_daily_data_vars(ds_all, lat, lon, timeval):
     data_vars_dict['TAVG'] = round(ds.tavg.values.tolist(), 1)
 
     return data_vars_dict
+
+
+def format_header(lat_i, lon_i, lat, lon, pad_lat=3, pad_lon=4):
+    base = str(lat_i).rjust(pad_lat, '0') + "_" + str(lon_i).rjust(pad_lon, '0')
+    wth_name = base + ".WTH"
+
+    header_line1 = TITLE_W + base + EXT_NC
+    header_line2 = 'CI'.rjust(PAD) + str(lat).rjust(PAD_LON_LAT) + str(lon).rjust(PAD_LON_LAT) + 5 * (
+        '-99'.rjust(PAD)) + '\n'
+
+    fwth = open(wth_name, "w+")
+    fwth.write(header_line1)
+    fwth.write(HEADER_L1)
+    fwth.write(header_line2)
+    fwth.write(HEADER_L3)
+
+    fwth.close()
+    return wth_name
+
