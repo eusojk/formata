@@ -93,6 +93,10 @@ class NCToWTHConverter:
                         fwth.close()
                         os.remove(wth_header)
                         break
+
+                    if t == 0:
+                        ut.update_table(wth_header_u, lat, lon)
+
                     entry = ut.format_data_vars_entry(daily_data_vars, date)
 
                     # append this entry into the file

@@ -12,6 +12,7 @@ HEADER_L3 = '@DATE  SRAD  TMAX  TMIN  RAIN  WIND  RHUM  TAVG\n'
 
 TABLEDB = os.path.dirname(os.path.realpath(__file__)) + "/templates/table.txt"
 
+
 def is_leap_year(year):
     """
     Check if a given year is leap
@@ -143,9 +144,13 @@ def format_header(lat_i, lon_i, lat, lon, pad_lat=3, pad_lon=4):
 
     return wth_name
 
+
 def update_table(wth_file, lat, lon):
     """
     Append this entry to table.txt
+    :param wth_file: WTH file name
+    :param lat: latitude
+    :param lon: longitude
     :return:
     """
     name_index = str(lat).rjust(PAD_LON_LAT) + str(lon).rjust(PAD_LON_LAT)
