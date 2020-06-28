@@ -1,6 +1,6 @@
 # formata
 
-A Python utility to convert global historical weather data (NetCDF) to .WTH format, which usable by DSSAT.
+A Python utility to convert global historical weather data (NetCDF) to .WTH format, for DSSAT.
 ----------
 Extract from a sample WTH:
 ```

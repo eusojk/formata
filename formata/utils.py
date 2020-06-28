@@ -1,5 +1,5 @@
 import math
-
+import os
 import collections
 
 PAD = 6
@@ -10,6 +10,7 @@ HEADER_L1 = '@ INSI      LAT     LONG  ELEV   TAV   AMP REFHT WNDHT\n'
 HEADER_L2 = '    CI   49.250  -99.750   -99   3.5  34.7   -99    10\n'
 HEADER_L3 = '@DATE  SRAD  TMAX  TMIN  RAIN  WIND  RHUM  TAVG\n'
 
+TABLEDB = os.path.dirname(os.path.realpath(__file__)) + "/templates/table.txt"
 
 def is_leap_year(year):
     """
@@ -76,18 +77,41 @@ def get_daily_data_vars(ds_all, lat, lon, timeval):
     data_vars_dict = collections.OrderedDict()
     ds = ds_all.isel(time=timeval, latitude=lat, longitude=lon)
     srad = ds.srad.values.tolist()
+    tmax = ds.tmax.values.tolist()
+    tmin = ds.tmin.values.tolist()
+    prate = ds.prate.values.tolist()
+    wndspd = ds.wndspd.values.tolist()
+    rhstmax = ds.rhstmax.values.tolist()
+    tavg = ds.tavg.values.tolist()
 
     # watch out for NaN values
-    if math.isnan(srad):
+    all_nan = math.isnan(srad) and math.isnan(tmax) and math.isnan(tmin) and math.isnan(prate) \
+              and math.isnan(wndspd) and math.isnan(rhstmax) and math.isnan(tavg)
+    if all_nan:
         return
 
+    if math.isnan(srad):
+        srad = -99
+    if math.isnan(tmax):
+        tmax = -99
+    if math.isnan(tmin):
+        tmin = -99
+    if math.isnan(prate):
+        prate = -99
+    if math.isnan(wndspd):
+        wndspd = -99
+    if math.isnan(rhstmax):
+        rhstmax = -99
+    if math.isnan(tavg):
+        tavg = -99
+
     data_vars_dict['SRAD'] = round(srad, 1)
-    data_vars_dict['TMAX'] = round(ds.tmax.values.tolist(), 1)
-    data_vars_dict['TMIN'] = round(ds.tmin.values.tolist(), 1)
-    data_vars_dict['RAIN'] = round(ds.prate.values.tolist(), 1)
-    data_vars_dict['WIND'] = round(ds.wndspd.values.tolist(), 1)
-    data_vars_dict['RHUM'] = round(ds.rhstmax.values.tolist(), 1)
-    data_vars_dict['TAVG'] = round(ds.tavg.values.tolist(), 1)
+    data_vars_dict['TMAX'] = round(tmax, 1)
+    data_vars_dict['TMIN'] = round(tmin, 1)
+    data_vars_dict['RAIN'] = round(prate, 1)
+    data_vars_dict['WIND'] = round(wndspd, 1)
+    data_vars_dict['RHUM'] = round(rhstmax, 1)
+    data_vars_dict['TAVG'] = round(tavg, 1)
 
     return data_vars_dict
 
@@ -105,16 +129,28 @@ def format_header(lat_i, lon_i, lat, lon, pad_lat=3, pad_lon=4):
     """
     base = str(lat_i).rjust(pad_lat, '0') + "_" + str(lon_i).rjust(pad_lon, '0')
     wth_name = base + ".WTH"
+    name_index = str(lat).rjust(PAD_LON_LAT) + str(lon).rjust(PAD_LON_LAT)
 
     header_line1 = TITLE_W + base + EXT_NC
-    header_line2 = 'CI'.rjust(PAD) + str(lat).rjust(PAD_LON_LAT) + str(lon).rjust(PAD_LON_LAT) + 5 * (
-        '-99'.rjust(PAD)) + '\n'
+    header_line2 = 'CI'.rjust(PAD) + name_index + 5 * ('-99'.rjust(PAD)) + '\n'
 
     fwth = open(wth_name, "w+")
     fwth.write(header_line1)
     fwth.write(HEADER_L1)
     fwth.write(header_line2)
     fwth.write(HEADER_L3)
-
     fwth.close()
+
     return wth_name
+
+def update_table(wth_file, lat, lon):
+    """
+    Append this entry to table.txt
+    :return:
+    """
+    name_index = str(lat).rjust(PAD_LON_LAT) + str(lon).rjust(PAD_LON_LAT)
+    entry = wth_file + name_index + '\n'
+
+    with open(TABLEDB, "a") as f:
+        f.write(entry)
+        f.close()
