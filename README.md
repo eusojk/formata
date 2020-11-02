@@ -26,3 +26,6 @@ Extract from a sample WTH:
     * Wind speed
 
  * AgMerra climate datasets can be found on NASA GISS [website](https://data.giss.nasa.gov/impacts/agmipcf/agmerra/)
+
+missing:
+the point 251_0001.WTH   27.375    0.125 
