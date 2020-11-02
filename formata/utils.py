@@ -1,6 +1,8 @@
 import math
 import os
 import collections
+import pycountry
+from country_bounding_boxes import country_subunits_by_iso_code
 
 PAD = 6
 PAD_LON_LAT = 9
@@ -10,7 +12,7 @@ HEADER_L1 = '@ INSI      LAT     LONG  ELEV   TAV   AMP REFHT WNDHT\n'
 HEADER_L2 = '    CI   49.250  -99.750   -99   3.5  34.7   -99    10\n'
 HEADER_L3 = '@DATE  SRAD  TMAX  TMIN  RAIN  WIND  RHUM  TAVG\n'
 
-TABLEDB = os.path.dirname(os.path.realpath(__file__)) + "/templates/table.txt"
+TABLEDB = os.path.dirname(os.path.realpath(__file__)) + "/templates/table_CA_WEST.txt"
 
 
 def is_leap_year(year):
@@ -159,3 +161,41 @@ def update_table(wth_file, lat, lon):
     with open(TABLEDB, "a") as f:
         f.write(entry)
         f.close()
+
+def get_country_iso(country, alpha=3):
+    """
+    Find and return iso code of a country
+    :param country: STR- Name of a country (e.g. Thailand)
+    :param alpha: INT - iso code can be 2 or 3
+    :return: STR - iso code of the country (e.g. TH or THA) or None if error
+    """
+    try:
+        country_found = pycountry.countries.search_fuzzy(country)[0]
+        if alpha == 3:
+            return country_found.alpha_3
+        else:
+            return country_found.alpha_2
+    except LookupError:
+        print("Can't find country: {}. Check again".format(country))
+        return
+
+def get_country_bbox(country):
+    """
+    bbox = min Longitude , min Latitude , max Longitude , max Latitude
+    bbox = left,bottom,right,top
+    :param country: country of interest
+    :return: a tuple representing a bounding box
+    """
+    country_iso = get_country_iso(country)
+    if country_iso is None:
+        return
+    matched_bbox = [c.bbox for c in country_subunits_by_iso_code(country_iso)]
+    # ensure only one country is matched
+    if len(matched_bbox) == 0:
+        return
+    elif len(matched_bbox) == 1:
+        bbox = matched_bbox[0]
+    else:
+        bbox = matched_bbox[1]
+    # bbox = (x_min, y_min, x_max, y_max)
+    return bbox

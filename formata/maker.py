@@ -11,9 +11,10 @@ class NCToWTHConverter:
     A Converter class to WTH files from global NetCDF weather data
     """
 
-    def __init__(self, src_dir):
+    def __init__(self, src_dir, country="globe"):
         self.src_dir = src_dir
         self.years = ut.make_wth_dates_format()
+        self.country = self.check_country(country)
 
     def check_dir(self):
         """
@@ -31,6 +32,17 @@ class NCToWTHConverter:
 
         return nc_all
 
+    def check_country(self, country):
+
+        if country == "globe":
+            return country
+
+        iso = ut.get_country_iso(country)
+        if iso is None:
+            return
+        else:
+            return country
+
     # noinspection PyMethodMayBeStatic
     def is_out_dir_present(self, dest_dir):
         """
@@ -42,6 +54,13 @@ class NCToWTHConverter:
             print('No such output directory found:', dest_dir)
             return False
         return True
+
+    def print_country_boundary(self, data):
+        """
+
+        :return:
+        """
+        print( data.get_country_boundary("England"))
 
     def to_WTH(self, dest_dir):
         """
@@ -59,6 +78,7 @@ class NCToWTHConverter:
         weather_data = parser.WeatherDataNC(nc_dir)
         self.to_WTH_converter(weather_data, dest_dir)
 
+
     def to_WTH_converter(self, weather_data, dest_dir):
         """
         Main function responsible for conversion
@@ -67,14 +87,25 @@ class NCToWTHConverter:
         :return:
         """
         ds_all = weather_data.get_global_dataset()
-        lon_num = weather_data.get_num_of_attribute('longitude')
-        lat_num = weather_data.get_num_of_attribute('latitude')
+        if self.country is None:
+            print("Country given is erroneous:")
+            return
+        elif self.country == "globe":
+            lon_num_start = 0
+            lon_num_stop  = weather_data.get_num_of_attribute('longitude')
+            lat_num_start = 0
+            lat_num_stop  = weather_data.get_num_of_attribute('latitude')
+        else:
+            lon_num_start, lon_num_stop, lat_num_start, lat_num_stop = weather_data.get_country_boundary(self.country)
+
 
         # top bottom, left to right
-        for lon_i in range(lon_num):
+        for lon_i in range(lon_num_start, lon_num_stop + 1):
+        # for lon_i in range(lon_num_start, lon_num_stop+1):
             lon = ds_all.longitude.isel(longitude=lon_i).values.tolist()
 
-            for lat_i in range(lat_num):
+            for lat_i in range(lat_num_start, lat_num_stop+1):
+            # for lat_i in range(lat_num_start, lat_num_stop + 1):
                 lat = ds_all.latitude.isel(latitude=lat_i).values.tolist()
 
                 # create a dynamic header with updated LON, LAT info and move it into the folder given
