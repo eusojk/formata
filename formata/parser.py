@@ -28,9 +28,13 @@ class WeatherDataNC:
         try:
             # min_lon, min_lat, max_lon, max_lat = utils.get_country_bbox(country)
             # min_lon, min_lat, max_lon, max_lat = -104.05, 45.94, -96.55, 49.0 # North Dakota -done
-            min_lon, min_lat, max_lon, max_lat = -108.619, 46.57198, -94.5712, 54.25233   # CA WEST - running
+            # min_lon, min_lat, max_lon, max_lat = -108.619, 46.57198, -94.5712, 54.25233   # CA WEST - running
             # min_lon, min_lat, max_lon, max_lat = -84.5933, 40.30297, -62.8651, 51.13424       # CA EAST - next
             # min_lon, min_lat, max_lon, max_lat = -14.02,49.67,2.09,61.06   # UK - next
+
+            # min_lon, min_lat, max_lon, max_lat = -4.492328, 50.61108, 0.6076721, 57.51106   # UK - Missing - running
+            min_lon, min_lat, max_lon, max_lat = -83.09328, 41.80296, -64.19308, 50.20294   # CE - Missing
+            # min_lon, min_lat, max_lon, max_lat = -108.319, 47.47197, -95.41888, 54.07196    # CW - Missing
         except:
             print("Error unpacking boundingbox")
             return

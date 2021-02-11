@@ -100,6 +100,8 @@ class NCToWTHConverter:
 
 
         # top bottom, left to right
+        lon_num_start = 397
+        lat_num_start = 184
         for lon_i in range(lon_num_start, lon_num_stop + 1):
         # for lon_i in range(lon_num_start, lon_num_stop+1):
             lon = ds_all.longitude.isel(longitude=lon_i).values.tolist()

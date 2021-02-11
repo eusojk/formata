@@ -12,7 +12,7 @@ HEADER_L1 = '@ INSI      LAT     LONG  ELEV   TAV   AMP REFHT WNDHT\n'
 HEADER_L2 = '    CI   49.250  -99.750   -99   3.5  34.7   -99    10\n'
 HEADER_L3 = '@DATE  SRAD  TMAX  TMIN  RAIN  WIND  RHUM  TAVG\n'
 
-TABLEDB = os.path.dirname(os.path.realpath(__file__)) + "/templates/table_CA_WEST.txt"
+TABLEDB = os.path.dirname(os.path.realpath(__file__)) + "/templates/table_CA_EAST_Missing.txt"
 
 
 def is_leap_year(year):
