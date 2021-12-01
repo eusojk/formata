@@ -22,7 +22,7 @@ def is_leap_year(year):
     :return: True or False
     """
     check = ((year % 400 == 0) or ((year % 4 == 0) and (year % 100 != 0)))
-    return True if check else False
+    return check
 
 
 def format_data_vars_entry(data_vars, date, padding=6):
