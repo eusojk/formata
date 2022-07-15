@@ -7,7 +7,7 @@ cloudpickle==1.4.1
 colorama==0.4.3
 country-bounding-boxes==0.2.3
 dask==2.18.1
-distributed==2.18.0
+distributed==2021.10.0
 flake8==3.8.3
 -e git+git@github.com:eusojk/formata.git@f57cb98f54cb56363c5bd3da450579f18de0822a#egg=formata
 fsspec==0.7.4
